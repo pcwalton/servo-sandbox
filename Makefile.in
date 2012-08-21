@@ -1,0 +1,34 @@
+VPATH=%VPATH%
+
+UNAME=$(shell uname)
+
+ifeq ($(UNAME),Darwin)
+    OSTYPE=darwin
+endif
+ifeq ($(UNAME),Linux)
+    OSTYPE=linux
+endif
+
+C_SRC=src/main.c
+
+C_OBJS = $(patsubst %.c,%.o,$(C_SRC))
+CFLAGS += -I$(VPATH)/src -I$(VPATH)/../libhubbub/include -I$(VPATH)/../libparserutils/include
+LDFLAGS += -Lsrc/libhubbub -Lsrc/libparserutils -lhubbub -lparserutils -liconv
+
+.PHONY: all
+all: servo-sandbox.dummy
+
+servo-sandbox: $(C_OBJS)
+	$(CC) -o $@ $(LDFLAGS) $^
+
+%.o: %.c
+	mkdir -p `dirname $@` && $(CC) $(CFLAGS) -o $@ -c $<
+
+servo-sandbox.dummy: servo-sandbox
+	touch $@
+
+.PHONY: clean
+clean:
+	rm -f *.so *.dylib *.dll *.dummy src/*.o
+	
+
