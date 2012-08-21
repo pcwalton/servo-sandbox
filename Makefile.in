@@ -13,7 +13,7 @@ C_SRC=src/main.c
 
 C_OBJS = $(patsubst %.c,%.o,$(C_SRC))
 CFLAGS += -I$(VPATH)/src -I$(VPATH)/../libhubbub/include -I$(VPATH)/../libparserutils/include
-LDFLAGS += -Lsrc/libhubbub -Lsrc/libparserutils -lhubbub -lparserutils -liconv
+LDFLAGS += -L../libhubbub -L../libparserutils -lhubbub -lparserutils -liconv
 
 .PHONY: all
 all: servo-sandbox.dummy
