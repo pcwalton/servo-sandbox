@@ -13,13 +13,17 @@ C_SRC=src/main.c
 
 C_OBJS = $(patsubst %.c,%.o,$(C_SRC))
 CFLAGS += -I$(VPATH)/src -I$(VPATH)/../libhubbub/include -I$(VPATH)/../libparserutils/include
-LDFLAGS += -L../libhubbub -L../libparserutils -lhubbub -lparserutils -liconv
+LDFLAGS += -L../libhubbub -L../libparserutils -lhubbub -lparserutils
+
+ifeq ($(OSTYPE),darwin)
+	LDFLAGS += -liconv
+endif
 
 .PHONY: all
 all: servo-sandbox.dummy
 
 servo-sandbox: $(C_OBJS)
-	$(CC) -o $@ $(LDFLAGS) $^
+	$(CC) $^ -o $@ $(LDFLAGS)
 
 %.o: %.c
 	mkdir -p `dirname $@` && $(CC) $(CFLAGS) -o $@ -c $<
@@ -30,5 +34,4 @@ servo-sandbox.dummy: servo-sandbox
 .PHONY: clean
 clean:
 	rm -f *.so *.dylib *.dll *.dummy src/*.o
-	
 
