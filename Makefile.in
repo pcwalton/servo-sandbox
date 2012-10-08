@@ -31,6 +31,9 @@ servo-sandbox: $(C_OBJS)
 servo-sandbox.dummy: servo-sandbox
 	touch $@
 
+.PHONY: check
+check:
+
 .PHONY: clean
 clean:
 	rm -f *.so *.dylib *.dll *.dummy src/*.o
